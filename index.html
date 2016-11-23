@@ -16,7 +16,7 @@
     <section id="top">
         <div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a>
             <ul>
-                <li><a href="#introduction">简介 Introduction</a></li>
+                <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#application">Application</a></li>
                 <li><a href="#context">Context</a></li>
                 <li><a href="#request">Request</a></li>
@@ -32,7 +32,7 @@
     </section>
     <section>
         <div class="content">
-            <h1 id="introduction">简介</h1>
+            <h1 id="introduction">简介 Introduction</h1>
             <p>由 Express 原班人马打造的 koa，致力于成为一个更小、更健壮、更富有表现力的 Web 框架。使用 koa 编写 web 应用，通过组合不同的 generator，可以免除重复繁琐的回调函数嵌套，并极大地提升常用错误处理效率。Koa
                 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量优雅的函数库，使得编写 Web 应用变得得心应手。
             </p>
@@ -40,13 +40,13 @@
     </section>
     <section>
         <div class="content">
-            <h1 id="installation">安装</h1>
+            <h1 id="installation">安装 Installation</h1>
             <p>Koa 当前可以非常好的运行在最近的Node版本里.</p>
             <pre><code class="lang-bash">$ npm install koa
 $ node app.js</code></pre>
-            <p>T如果想在Node 0.12.x 下运行，你需要添加 <code>--harmony</code> 或 <code>--harmony-generators</code> 参数..</p>
-            <h1 id="application">Application</h1>
-            <p> AKoa 应用是一个包含中间件 generator 方法数组的对象。当请求到来时, 这些方法会以 stack-like 的顺序执行, 从这个角度来看，Koa 和其他中间件系统（比如 Ruby Rack 或者 Connect/Express
+            <p>如果想在Node 0.12.x 下运行，你需要添加 <code>--harmony</code> 或 <code>--harmony-generators</code> 参数..</p>
+            <h1 id="application">应用 Application</h1>
+            <p> Koa 应用是一个包含中间件 generator 方法数组的对象。当请求到来时, 这些方法会以 stack-like 的顺序执行, 从这个角度来看，Koa 和其他中间件系统（比如 Ruby Rack 或者 Connect/Express
                 ）非常相似. 然而 Koa 的一大设计理念是: 通过其他底层中间件层提供高级「语法糖」，而不是Koa. 这大大提高了框架的互操作性和健壮性, 并让中间件开发变得简单有趣.</p>
             <p> 比如内容协商（content-negotation）、缓存控制（cache freshness）、反向代理（proxy support）重定向等常见功能都由中间件来实现. 将类似常见任务分离给中间件实现, Koa 实现了异常精简的代码.
                 </p>
@@ -59,7 +59,7 @@ app.use(function *(){
 });
 
 app.listen(3000);</code></pre>
-            <h2 id="cascading">代码级联（Cascading）</h2>
+            <h2 id="cascading">代码级联 Cascading</h2>
             <p> Koa 中间件以一种更加传统的方式级联起来, 跟你在其他系统或工具中碰到的方式非常相似。 然而在以往的 Node 开发中, 级联是通过回调实现的, 想要开发用户友好的代码是非常困难的, Koa 借助 generators
                 实现了真正的中间件架构, 与 Connect 实现中间件的方法相对比，Koa 的做法不是简单的将控制权依次移交给一个又一个的方法直到某个结束，Koa 执行代码的方式有点像回形针，用户请求通过中间件，遇到 <code>yield next</code>                关键字时，会被传递到下游中间件（downstream），在 <code>yield next</code> 捕获不到下一个中间件时，逆序返回继续执行代码（upstream）。</p>
             <p> 下边这个简单返回 Hello World 的例子可以很好说明 Koa 的中间件机制：一开始，请求经过 x-response-time 和 logging 中间件，记录了请求的开始时间，然后将控制权 yield 给 response
@@ -93,13 +93,13 @@ app.use(function *(){
 });
 
 app.listen(3000);</code></pre>
-            <h2 id="settings">Settings</h2>
-            <p> Application settings are properties on the <code>app</code> instance, currently the following are supported:</p>
+            <h2 id="settings">配置 Settings</h2>
+            <p> 应用程序配置是 <code>app</code> 实例的属性, 当前支持以下配置属性:</p>
             <ul>
-                <li><code>app.name</code> optionally give your application a name</li>
-                <li><code>app.env</code> defaulting to the <strong>NODE_ENV</strong> or &quot;development&quot;</li>
-                <li><code>app.proxy</code> when true proxy header fields will be trusted</li>
-                <li><code>app.subdomainOffset</code> offset of <code>.subdomains</code> to ignore [2]</li>
+                <li><code>app.name</code> 指定一个应用程序名字[可选]</li>
+                <li><code>app.env</code> 环境, 默认为<strong>NODE_ENV</strong> 可配置为 &quot;development&quot;</li>
+                <li><code>app.proxy</code> 设置为 true 时proxy header fields 会被信任</li>
+                <li><code>app.subdomainOffset</code> 表示子域名 <code>.subdomains</code> 所忽略的偏移量, 默认值为2 </li>
             </ul>
             <h2 id="app-listen-">app.listen(...)</h2>
             <p> A Koa application is not a 1-to-1 representation of a HTTP server. One or more Koa applications may be mounted
