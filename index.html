@@ -10,6 +10,15 @@
     <meta charset="utf8">
     <meta name="keywords" content="Koa.js, Koa, Koajs, Nodejs, Web框架, Koa2.0, Koa中文, Koa教程, Koa中文网">
     <meta name="description" content="Express原班团队打造的下一代 Node.js web 框架, 全新架构, 核心代码精简, 全新的流程书写代码-Koajs">
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?fca5a5930cb07945d5854928263d10f9";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
 </head>
 
 <body>
@@ -49,7 +58,7 @@ $ node app.js</code></pre>
             <p> Koa 应用是一个包含中间件 generator 方法数组的对象。当请求到来时, 这些方法会以 stack-like 的顺序执行, 从这个角度来看，Koa 和其他中间件系统（比如 Ruby Rack 或者 Connect/Express
                 ）非常相似. 然而 Koa 的一大设计理念是: 通过其他底层中间件层提供高级「语法糖」，而不是Koa. 这大大提高了框架的互操作性和健壮性, 并让中间件开发变得简单有趣.</p>
             <p> 比如内容协商（content-negotation）、缓存控制（cache freshness）、反向代理（proxy support）重定向等常见功能都由中间件来实现. 将类似常见任务分离给中间件实现, Koa 实现了异常精简的代码.
-                </p>
+            </p>
             <p> 一如既往的 Hello world:</p>
             <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
 var app = koa();
@@ -211,9 +220,11 @@ app.keys = new KeyGrip([&#39;im a newer secret&#39;, &#39;i like turtle&#39;], &
                 <li><code>secure</code> secure cookie</li>
                 <li><code>httpOnly</code> server-accessible cookie, <strong>true</strong> by default</li>
                 <li><code>overwrite</code> a boolean indicating whether to overwrite previously set cookies of the same name
-                    (<strong>false</strong> by default). If this is true, all cookies set during the same request with the
+                    (
+                    <strong>false</strong> by default). If this is true, all cookies set during the same request with the
                     same name (regardless of path or domain) are filtered out of the Set-Cookie header when setting this
-                    cookie</li>
+                    cookie
+                </li>
             </ul>
             <p>koa uses the <a href="https://github.com/jed/cookies">cookies</a> module where options are simply passed.</p>
             <h3 id="ctx-throw-msg-status-properties-">ctx.throw([msg], [status], [properties])</h3>
@@ -245,7 +256,8 @@ this.throw(&#39;access_denied&#39;, { user: user });</code></pre>
             <h3 id="ctx-respond">ctx.respond</h3>
             <p> To bypass Koa&#39;s built-in response handling, you may explicitly set <code>this.respond = false;</code>. Use
                 this if you want to write to the raw <code>res</code> object instead of letting Koa handle the response for
-                you.</p>
+                you.
+            </p>
             <p> Note that using this is <strong>not</strong> supported by Koa. This may break intended functionality of Koa middleware
                 and Koa itself. Using this property is considered a hack and is only a convenience to those wishing to use
                 traditional <code>fn(req, res)</code> functions and middleware within Koa.</p>
