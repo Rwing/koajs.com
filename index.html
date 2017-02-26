@@ -74,50 +74,50 @@ const app = require(&#39;./app&#39;);</code></pre>
 }</code></pre>
 <p>你也可以使用 <a href="http://babeljs.io/docs/plugins/preset-stage-3/">stage-3 preset</a> 来替代.</p>
             <h1 id="application">应用 Application</h1>
-            <p> Koa 应用是一个包含中间件 generator 方法数组的对象。当请求到来时, 这些方法会以 stack-like 的顺序执行, 从这个角度来看，Koa 和其他中间件系统（比如 Ruby Rack 或者 Connect/Express
+            <p> Koa 应用是一个包含中间件方法数组的对象。当请求到来时, 这些方法会以 stack-like 的顺序执行, 从这个角度来看，Koa 和其他中间件系统（比如 Ruby Rack 或者 Connect/Express
                 ）非常相似. 然而 Koa 的一大设计理念是: 通过其他底层中间件层提供高级「语法糖」，而不是Koa. 这大大提高了框架的互操作性和健壮性, 并让中间件开发变得简单有趣.</p>
             <p> 比如内容协商（content-negotation）、缓存控制（cache freshness）、反向代理（proxy support）重定向等常见功能都由中间件来实现. 将类似常见任务分离给中间件实现, Koa 实现了异常精简的代码.
             </p>
             <p> 一如既往的 Hello world:</p>
-            <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
-var app = koa();
+            <pre><code class="lang-js">const Koa = require(&#39;koa&#39;);
+const app = new Koa();
 
-app.use(function *(){
-  this.body = &#39;Hello World&#39;;
+app.use(ctx =&gt; {
+  ctx.body = &#39;Hello World&#39;;
 });
 
 app.listen(3000);</code></pre>
             <h2 id="cascading">代码级联 Cascading</h2>
-            <p> Koa 中间件以一种更加传统的方式级联起来, 跟你在其他系统或工具中碰到的方式非常相似。 然而在以往的 Node 开发中, 级联是通过回调实现的, 想要开发用户友好的代码是非常困难的, Koa 借助 generators
-                实现了真正的中间件架构, 与 Connect 实现中间件的方法相对比，Koa 的做法不是简单的将控制权依次移交给一个又一个的方法直到某个结束，Koa 执行代码的方式有点像回形针，用户请求通过中间件，遇到 <code>yield next</code>                关键字时，会被传递到下游中间件（downstream），在 <code>yield next</code> 捕获不到下一个中间件时，逆序返回继续执行代码（upstream）。</p>
-            <p> 下边这个简单返回 Hello World 的例子可以很好说明 Koa 的中间件机制：一开始，请求经过 x-response-time 和 logging 中间件，记录了请求的开始时间，然后将控制权 yield 给 response
-                中间件. 当一个中间件执行 <code>yield next</code>时，该方法会暂停执行并把控制权传递给下一个中间件，当没有下一个中间件执行 downstream 的时候，代码将会逆序执行所有流过中间件的
+            <p> Koa 中间件以一种更加传统的方式级联起来, 跟你在其他系统或工具中碰到的方式非常相似。 然而在以往的 Node 开发中, 级联是通过回调实现的, 想要开发用户友好的代码是非常困难的, Koa 借助 async 函数
+                实现了真正的中间件架构, 与 Connect 实现中间件的方法相对比，Koa 的做法不是简单的将控制权依次移交给一个又一个的方法直到某个结束，Koa 执行代码的方式有点像回形针，用户请求通过中间件，遇到 <code>next()</code>                关键字时，会调用下游中间件（downstream），在 <code>next()</code> 捕获不到下一个中间件时，逆序返回继续执行代码（upstream）。</p>
+            <p> 下边这个简单返回 Hello World 的例子可以很好说明 Koa 的中间件机制：一开始，请求经过 x-response-time 和 logging 中间件，记录了请求的开始时间，然后将控制权交给 response
+                中间件. 当一个中间件执行 <code>next()</code>时，该方法会暂停执行并把控制权传递给下一个中间件，当没有下一个中间件执行 downstream 的时候，代码将会逆序执行所有流过中间件的
                 upstream 代码。</p>
-            <pre><code class="lang-js">var koa = require(&#39;koa&#39;);
-var app = koa();
+            <pre><code class="lang-js">const Koa = require(&#39;koa&#39;);
+const app = new Koa();
 
 // x-response-time
 
-app.use(function *(next){
-  var start = new Date;
-  yield next;
-  var ms = new Date - start;
-  this.set(&#39;X-Response-Time&#39;, ms + &#39;ms&#39;);
+app.use(async function (ctx, next) {
+  const start = new Date();
+  await next();
+  const ms = new Date() - start;
+  ctx.set(&#39;X-Response-Time&#39;, `${ms}ms`);
 });
 
 // logger
 
-app.use(function *(next){
-  var start = new Date;
-  yield next;
-  var ms = new Date - start;
-  console.log(&#39;%s %s - %s&#39;, this.method, this.url, ms);
+app.use(async function (ctx, next) {
+  const start = new Date();
+  await next();
+  const ms = new Date() - start;
+  console.log(`${ctx.method} ${ctx.url} - ${ms}`);
 });
 
 // response
 
-app.use(function *(){
-  this.body = &#39;Hello World&#39;;
+app.use(ctx =&gt; {
+  ctx.body = &#39;Hello World&#39;;
 });
 
 app.listen(3000);</code></pre>
